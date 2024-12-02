@@ -13,13 +13,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const app_1 = __importDefault(require("./app"));
-const PORT = 5000;
+const mongoose_1 = __importDefault(require("mongoose"));
+// const PORT = 5000;
 let server;
-function bootstrap() {
+function main() {
     return __awaiter(this, void 0, void 0, function* () {
-        server = app_1.default.listen(PORT, () => {
-            console.log(`Example app listening on port ${PORT}`);
-        });
+        // await mongoose.connect(process.env.DATABASE_URL!);
+        if (!process.env.DATABASE_URL) {
+            throw new Error('DATABASE_URL is not defined');
+        }
+        yield mongoose_1.default.connect(process.env.DATABASE_URL);
     });
 }
-bootstrap();
+app_1.default.listen(process.env.PORT, () => {
+    console.log(`Example app listening on port ${process.env.PORT}`);
+});
+// async function bootstrap() {
+//     server= app.listen(PORT, () => {
+//         console.log(`Example app listening on port ${PORT}`)
+//       });
+// }
+// bootstrap();
